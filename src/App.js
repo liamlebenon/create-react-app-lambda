@@ -1,50 +1,24 @@
-import React, { Component } from "react"
-import logo from "./logo.svg"
-import "./App.css"
+import './App.css';
+import { Header } from './components/Header/Header';
+import { PostList } from './components/PostList/PostList'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import { UserProfile } from './components/UserProfile/UserProfile';
 
-class LambdaDemo extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { loading: false, msg: null }
-  }
+const App = () => {
 
-  handleClick = api => e => {
-    e.preventDefault()
-
-    this.setState({ loading: true })
-    fetch("/.netlify/functions/" + api)
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }))
-  }
-
-  render() {
-    const { loading, msg } = this.state
-
-    return (
-      <p>
-        <button onClick={this.handleClick("hello")}>{loading ? "Loading..." : "Call Lambda"}</button>
-        <button onClick={this.handleClick("async-dadjoke")}>{loading ? "Loading..." : "Call Async Lambda"}</button>
-        <br />
-        <span>{msg}</span>
-      </p>
-    )
-  }
-}
-
-class App extends Component {
-  render() {
-    return (
+  return (
+    <Router>
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <LambdaDemo />
-        </header>
+          <Header />
+          <div class='body-container'>
+            <Switch>
+              <Route path='/' exact component={PostList} />
+              <Route path='/users/:username' component={UserProfile} />
+            </Switch>
+          </div>
       </div>
-    )
-  }
+    </Router>
+  );
 }
 
-export default App
+export default App;
